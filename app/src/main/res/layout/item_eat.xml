@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="12dp"
+    app:cardBackgroundColor="@color/white"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:id="@+id/textTaskDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:gravity="end"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="6dp"
+            android:text="wfdfsewdsad"
+            android:textSize="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/todoCheckBoxEat"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:buttonTint="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/textTaskEat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="fdsfdsfdsf"
+                android:textColor="@color/black"
+                android:textSize="12dp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
