@@ -1,111 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:layout_marginTop="20dp"
-    tools:context=".Activity.ComparisonsActivity">
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".Activity.MainActivity">
 
 
-    <LinearLayout
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tableLayot"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="56dp"
+        android:background="@color/blue"
+        android:elevation="12sp"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/white"
+        app:tabMaxWidth="0dp"
+        app:tabTextColor="@color/white"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/white" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1">
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/Viper_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-            <LinearLayout
-                android:layout_margin="10dp"
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:textColorHint="#838383"
-                    android:textColor="#838383"
-                    android:id="@+id/eatEdit"
-                    android:textAlignment="center"
-                    android:layout_width="0dp"
-                    android:layout_weight="10"
-                    android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:background="@drawable/ed_send"
-                    android:padding="12dp"
-                    android:maxLines="1"
-                    android:hint="Введите что у вас есть, для достижения цели." />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/eatBtn"
-                    android:layout_width="0dp"
-                    android:layout_weight="1.3"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:textSize="16sp"
-                    android:background="@drawable/sendicon"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/darker_gray" />
-            </LinearLayout>
-
-           <androidx.recyclerview.widget.RecyclerView
-               android:id="@+id/recyclerEAt"
-               android:layoutAnimation="@anim/loyout_to_up_recycler"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:layout_margin="10dp"
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:textColorHint="#838383"
-                    android:textColor="#838383"
-                    android:id="@+id/noEdit"
-                    android:textAlignment="center"
-                    android:layout_width="0dp"
-                    android:layout_weight="10"
-                    android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:background="@drawable/ed_send"
-                    android:padding="12dp"
-                    android:hint="Введите чего у вас нет, для достежения цели." />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/noBtn"
-                    android:layout_width="0dp"
-                    android:layout_weight="1.3"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:textSize="16sp"
-                    android:background="@drawable/sendicon"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/darker_gray" />
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerNo"
-                android:layoutAnimation="@anim/loyout_to_up_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

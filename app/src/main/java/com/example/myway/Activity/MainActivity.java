@@ -11,11 +11,9 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.example.myway.Adapters.ToDoAdapter;
 import com.example.myway.Interf.DialogCloseListener;
@@ -26,7 +24,6 @@ import com.example.myway.Utils.DatabaseHandler;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements DialogCloseListener {
 
@@ -50,11 +47,11 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         tasksRecyclerView = findViewById(R.id.tasksRecyclerView);
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        tasksAdapter = new ToDoAdapter(db,MainActivity.this);
+        tasksAdapter = new ToDoAdapter(db, MainActivity.this);
         tasksRecyclerView.setAdapter(tasksAdapter);
 
         Context context = tasksRecyclerView.getContext();
-        LayoutAnimationController layoutAnimationController = AnimationUtils.loadLayoutAnimation(context,R.anim.loyout_slide_recycler);
+        LayoutAnimationController layoutAnimationController = AnimationUtils.loadLayoutAnimation(context, R.anim.loyout_slide_recycler);
         tasksRecyclerView.setLayoutAnimation(layoutAnimationController);
         tasksRecyclerView.getAdapter().notifyDataSetChanged();
         tasksRecyclerView.scheduleLayoutAnimation();
@@ -76,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     }
 
     @Override
-    public void handleDialogClose(DialogInterface dialog){
+    public void handleDialogClose(DialogInterface dialog) {
         taskList = db.getAllTasks();
         Collections.reverse(taskList);
         tasksAdapter.setTasks(taskList);

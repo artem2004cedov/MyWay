@@ -15,12 +15,13 @@ import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int VERSION = 16;
+    private static final int VERSION = 21;
     private static final String NAME = "toDoListDatabase";
 
     private static final String TODO_TABLE = "todo";
     private static final String TODO_TABLE_EAT = "todo_eat";
     private static final String TODO_TABLE_NO = "todo_no";
+    private static final String TODO_TABLE_Necessary = "todo_necessary";
 
     private static final String ID = "id";
 
@@ -30,17 +31,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String ID_NO = "id_no";
     private static final String ID_NO_RAN = "id_no_ran";
 
+    private static final String ID_Necessary = "id_necessary";
+    private static final String ID_Necessary_RAN = "id_necessary_ran";
+
+
     private static final String TASK = "task";
     private static final String EAT = "eat";
     private static final String NO = "noo";
+    private static final String NECESSARY = "necessary";
 
     private static final String STATUS = "status";
     private static final String STATUS_EAT = "status_eat";
     private static final String STATUS_NO = "status_no";
+    private static final String STATUS_Necessary = "status_necessary";
 
     private static final String DATE = "date";
     private static final String DATE_EAT = "date_eat";
     private static final String DATE_NO = "date_no";
+    private static final String DATE_Necessary = "date_necessary";
 
     private static final String CREATE_TODO_TABLE = "CREATE TABLE IF NOT EXISTS " + TODO_TABLE + "(" +
             ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TASK + " TEXT, " + DATE + " TEXT, "
@@ -50,9 +58,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             "(" + ID_EAT + " INTEGER PRIMARY KEY AUTOINCREMENT, " + EAT + " TEXT, " + DATE_EAT + " TEXT, " + ID_EAT_RAN + " INTEGER, "
             + STATUS_EAT + " INTEGER)";
 
-    private static final String CREATE_TODO_TABLE_No = "CREATE TABLE IF NOT EXISTS " + TODO_TABLE_NO +
+    private static final String CREATE_TODO_TABLE_NO = "CREATE TABLE IF NOT EXISTS " + TODO_TABLE_NO +
             "(" + ID_NO + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NO + " TEXT, " + DATE_NO + " TEXT, " + ID_NO_RAN + " INTEGER, "
             + STATUS_NO + " INTEGER)";
+
+    private static final String CREATE_TODO_TABLE_NECESSARY = "CREATE TABLE IF NOT EXISTS " + TODO_TABLE_Necessary +
+            "(" + ID_Necessary + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NECESSARY + " TEXT, " + DATE_Necessary + " TEXT, " + ID_Necessary_RAN + " INTEGER, "
+            + STATUS_Necessary + " INTEGER)";
 
 
 
@@ -68,7 +80,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TODO_TABLE);
         db.execSQL(CREATE_TODO_TABLE_EAT);
-        db.execSQL(CREATE_TODO_TABLE_No);
+        db.execSQL(CREATE_TODO_TABLE_NO);
+        db.execSQL(CREATE_TODO_TABLE_NECESSARY);
     }
 
     //    Удаление таблицы
@@ -77,6 +90,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TODO_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + TODO_TABLE_EAT);
         db.execSQL("DROP TABLE IF EXISTS " + TODO_TABLE_NO);
+        db.execSQL("DROP TABLE IF EXISTS " + TODO_TABLE_Necessary);
         onCreate(db);
     }
 
@@ -111,6 +125,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(ID_NO_RAN, task.getId_no());
         cv.put(STATUS_NO, 0);
         db.insert(TODO_TABLE_NO, null, cv);
+    }
+
+    public void insertNecessary(ToDoModel task) {
+        ContentValues cv = new ContentValues();
+        cv.put(NECESSARY, task.getNecessary());
+        cv.put(DATE_Necessary, task.getDate());
+        cv.put(ID_Necessary_RAN, task.getId_necessary());
+        cv.put(STATUS_Necessary, 0);
+        db.insert(TODO_TABLE_Necessary, null, cv);
     }
 
     @SuppressLint("Range")
@@ -200,6 +223,35 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return taskList;
     }
 
+    @SuppressLint("Range")
+    public List<ToDoModel> getAllNecessary() {
+        List<ToDoModel> taskList = new ArrayList<>();
+        Cursor cur = null;
+        db.beginTransaction();
+        try {
+            cur = db.query(TODO_TABLE_Necessary, null, null, null, null, null, null, null);
+            if (cur != null) {
+                if (cur.moveToFirst()) {
+                    do {
+                        ToDoModel task = new ToDoModel();
+                        task.setId_necessary_table(cur.getInt(cur.getColumnIndex(ID_Necessary)));
+                        task.setNecessary(cur.getString(cur.getColumnIndex(NECESSARY)));
+                        task.setStatus_necessary(cur.getInt(cur.getColumnIndex(STATUS_Necessary)));
+                        task.setDate(cur.getString(cur.getColumnIndex(DATE_Necessary)));
+                        task.setId_necessary(cur.getInt(cur.getColumnIndex(ID_Necessary_RAN)));
+                        taskList.add(task);
+                    }
+                    while (cur.moveToNext());
+                }
+            }
+        } finally {
+            db.endTransaction();
+            assert cur != null;
+            cur.close();
+        }
+        return taskList;
+    }
+
     public void updateStatus(int id, int status) {
         ContentValues cv = new ContentValues();
         cv.put(STATUS, status);
@@ -236,6 +288,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.update(TODO_TABLE_NO, cv, ID_NO + "= ?", new String[]{String.valueOf(id)});
     }
 
+    public void updateTaskNecessary(int id, String task) {
+        ContentValues cv = new ContentValues();
+        cv.put(NECESSARY, task);
+        db.update(TODO_TABLE_Necessary, cv, ID_Necessary + "= ?", new String[]{String.valueOf(id)});
+    }
+
     public void deleteTask(int id) {
         db.delete(TODO_TABLE, ID + "= ?", new String[]{String.valueOf(id)});
     }
@@ -246,5 +304,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void deleteTaskENo(int id) {
         db.delete(TODO_TABLE_NO, ID_NO + "= ?", new String[]{String.valueOf(id)});
+    }
+
+    public void deleteTaskENecessary(int id) {
+        db.delete(TODO_TABLE_Necessary, ID_Necessary + "= ?", new String[]{String.valueOf(id)});
     }
 }

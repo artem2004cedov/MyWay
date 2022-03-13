@@ -5,9 +5,45 @@ public class ToDoModel {
     private int status;
     private int status_eat;
     private int status_no;
+    private int status_necessary;
     private int id_no;
     private int id_eat;
+    private int id_necessary;
     private int id_eat_table;
+    private int id_necessary_table;
+    private String necessary;
+
+    public int getId_necessary() {
+        return id_necessary;
+    }
+
+    public void setId_necessary(int id_necessary) {
+        this.id_necessary = id_necessary;
+    }
+
+    public String getNecessary() {
+        return necessary;
+    }
+
+    public void setNecessary(String necessary) {
+        this.necessary = necessary;
+    }
+
+    public int getStatus_necessary() {
+        return status_necessary;
+    }
+
+    public void setStatus_necessary(int status_necessary) {
+        this.status_necessary = status_necessary;
+    }
+
+    public int getId_necessary_table() {
+        return id_necessary_table;
+    }
+
+    public void setId_necessary_table(int id_necessary_table) {
+        this.id_necessary_table = id_necessary_table;
+    }
 
     public int getId_eat_table() {
         return id_eat_table;

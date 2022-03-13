@@ -11,21 +11,26 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TableLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 
 import com.example.myway.Adapters.ToDoAdapterEat;
 import com.example.myway.Adapters.ToDoAdapterNo;
+import com.example.myway.Fragment.FragmentAdapter;
 import com.example.myway.Interf.DialogCloseListener;
 import com.example.myway.Model.ToDoModel;
 import com.example.myway.R;
 import com.example.myway.SwipesActivity.RecyclerItemTouchHelperEat;
 import com.example.myway.SwipesActivity.RecyclerItemTouchHelperNo;
 import com.example.myway.Utils.DatabaseHandler;
+import com.google.android.material.tabs.TabLayout;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -39,8 +44,10 @@ public class ComparisonsActivity extends AppCompatActivity implements DialogClos
     private int id;
     private DatabaseHandler db;
     private Button eatBtn, noBtn;
+    private TabLayout tableLayot;
+    private ViewPager Viper_layout;
 
-    private List<ToDoModel> modelList;
+    private List<ToDoModel> modelListEat;
     private List<ToDoModel> modelListsSpareEat;
 
     private List<ToDoModel> modelListNo;
@@ -56,16 +63,21 @@ public class ComparisonsActivity extends AppCompatActivity implements DialogClos
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comparisons);
+        tableLayot = findViewById(R.id.tableLayot);
+        Viper_layout = findViewById(R.id.Viper_layout);
         init();
     }
 
+
+
     private void init() {
+
 //        getSupportActionBar().hide();
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getColor(R.color.black96));
 
-        modelList = new ArrayList<>();
+        modelListEat = new ArrayList<>();
         modelListsSpareEat = new ArrayList<>();
         eatEdit = findViewById(R.id.eatEdit);
         recyclerEAt = findViewById(R.id.recyclerEAt);
@@ -75,14 +87,22 @@ public class ComparisonsActivity extends AppCompatActivity implements DialogClos
         noBtn = findViewById(R.id.noBtn);
         task = getIntent().getStringExtra("task");
         id = getIntent().getIntExtra("id", 0);
-        eatEdit.setHint("Введите что у вас есть, для достижения " + "\"" + task + "\".");
-        noEdit.setHint("Введите чего у вас нет, для достежения " + "\"" + task + "\".");
 
         db = new DatabaseHandler(ComparisonsActivity.this);
         db.openDatabase();
 
-        setEat();
-        setNo();
+        Viper_layout.setAdapter(new FragmentAdapter(getSupportFragmentManager(),id,task));
+        tableLayot.setupWithViewPager(Viper_layout);
+
+
+//        setEat();
+//        setNo();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("tab", 10);
     }
 
     private void setNo() {
@@ -148,7 +168,7 @@ public class ComparisonsActivity extends AppCompatActivity implements DialogClos
         recyclerEAt.setLayoutManager(new LinearLayoutManager(this));
         recyclerEAt.setHasFixedSize(true);
 
-        toDoAdapterEat = new ToDoAdapterEat(modelList, db, ComparisonsActivity.this);
+        toDoAdapterEat = new ToDoAdapterEat(modelListEat, db, ComparisonsActivity.this);
         recyclerEAt.setAdapter(toDoAdapterEat);
 
         Context context = recyclerEAt.getContext();
@@ -161,10 +181,10 @@ public class ComparisonsActivity extends AppCompatActivity implements DialogClos
                 ItemTouchHelper(new RecyclerItemTouchHelperEat(toDoAdapterEat));
         itemTouchHelper.attachToRecyclerView(recyclerEAt);
 
-        Collections.reverse(modelList);
-        modelList = db.getAllEat();
+        Collections.reverse(modelListEat);
+        modelListEat = db.getAllEat();
 
-        for (ToDoModel toDoModel : modelList) {
+        for (ToDoModel toDoModel : modelListEat) {
             if (toDoModel.getId_eat() == id) {
                 modelListsSpareEat.add(toDoModel);
                 toDoAdapterEat.setTasksEat(modelListsSpareEat);
@@ -185,10 +205,10 @@ public class ComparisonsActivity extends AppCompatActivity implements DialogClos
                         db.insertEat(task);
 
                         eatEdit.setText("");
-                        modelList = db.getAllEat();
+                        modelListEat = db.getAllEat();
 
                         modelListsSpareEat.clear();
-                        for (ToDoModel toDoModel : modelList) {
+                        for (ToDoModel toDoModel : modelListEat) {
                             if (toDoModel.getId_eat() == id) {
                                 modelListsSpareEat.add(toDoModel);
                                 toDoAdapterEat.setTasksEat(modelListsSpareEat);
@@ -205,9 +225,9 @@ public class ComparisonsActivity extends AppCompatActivity implements DialogClos
     @Override
     public void handleDialogClose(DialogInterface dialog) {
 
-        modelList = db.getAllEat();
+        modelListEat = db.getAllEat();
         modelListsSpareEat.clear();
-        for (ToDoModel toDoModel : modelList) {
+        for (ToDoModel toDoModel : modelListEat) {
             if (toDoModel.getId_eat() == id) {
                 modelListsSpareEat.add(toDoModel);
                 toDoAdapterEat.setTasksEat(modelListsSpareEat);

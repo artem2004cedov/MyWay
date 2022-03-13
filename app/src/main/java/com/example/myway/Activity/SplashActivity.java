@@ -20,16 +20,19 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 //        getSupportActionBar().hide();
 
+
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getColor(R.color.black96));
 
-        final Intent i = new Intent(SplashActivity.this, MainActivity.class);
+        final Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(i);
+
+                startActivity(intent);
                 finish();
             }
         }, 1000);
